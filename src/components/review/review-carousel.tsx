@@ -1,13 +1,15 @@
 import FlashcardContent from '@/components/flashcard-content';
 import {
-    Carousel,
-    CarouselApi,
-    CarouselContent,
-    CarouselItem,
+  Carousel,
+  CarouselApi,
+  CarouselContent,
+  CarouselItem,
 } from '@/components/ui/carousel';
 import { CardWithMetadata } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
+
+const FLIP_CARD_KEY = ' ';
 
 function Dots({ current, count }: { current: number; count: number }) {
   return (
@@ -26,7 +28,11 @@ function Dots({ current, count }: { current: number; count: number }) {
 }
 
 // Review carousel for mobile view of reviewing flashcards
-export default function MobileReviewCarousel({ card }: { card: CardWithMetadata }) {
+export default function MobileReviewCarousel({
+  card,
+}: {
+  card: CardWithMetadata;
+}) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -51,6 +57,19 @@ export default function MobileReviewCarousel({ card }: { card: CardWithMetadata 
       api.on('select', () => {
         setCurrent(api.selectedScrollSnap() + 1);
       });
+
+      const handleSpacePress = (event: KeyboardEvent) => {
+        if (event.key === FLIP_CARD_KEY) {
+          event.preventDefault();
+
+          const current = api.selectedScrollSnap();
+          // Assume that there is only 2 slides in the carousel
+          const nextIndex = current === 0 ? 1 : 0;
+          api.scrollTo(nextIndex, true);
+        }
+      };
+      window.addEventListener('keydown', handleSpacePress);
+      return () => window.removeEventListener('keydown', handleSpacePress);
     },
     [api]
   );
