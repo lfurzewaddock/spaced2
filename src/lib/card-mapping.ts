@@ -30,3 +30,22 @@ export const RATING_NUMBER_TO_NAME = {
   3: 'Hard',
   4: 'Again',
 } satisfies Record<Rating, (typeof ratings)[number]>;
+
+// For keyboard shortcuts
+// TODO: more clearly label this as keyboard related
+
+export const RATING_TO_KEY = {
+  [Rating.Again]: '1',
+  [Rating.Hard]: '2',
+  [Rating.Good]: '3',
+  [Rating.Easy]: '4',
+} as Record<Rating, string>;
+
+export const RATING_TO_NAME = {
+  [Rating.Again]: 'Again',
+  [Rating.Hard]: 'Hard',
+  [Rating.Good]: 'Good',
+  [Rating.Easy]: 'Easy',
+} as Record<Rating, string>;
+
+export const HOLD_TO_CANCEL_THRESHOLD_MS = 250;

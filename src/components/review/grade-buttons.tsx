@@ -1,11 +1,16 @@
 import BouncyButton from '@/components/bouncy-button';
 import { Kbd } from '@/components/ui/kbd';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
 } from '@/components/ui/tooltip';
+import {
+    HOLD_TO_CANCEL_THRESHOLD_MS,
+    RATING_TO_KEY,
+    RATING_TO_NAME,
+} from '@/lib/card-mapping';
 import { cn, isEventTargetInput } from '@/lib/utils';
 import { intlFormatDistance } from 'date-fns';
 import { useEffect, useRef, useState } from 'react';
@@ -15,22 +20,6 @@ type GradeButtonsProps = {
   onGrade: (grade: Grade) => void;
   card: Card;
 };
-
-const RATING_TO_KEY = {
-  [Rating.Again]: '1',
-  [Rating.Hard]: '2',
-  [Rating.Good]: '3',
-  [Rating.Easy]: '4',
-} as Record<Rating, string>;
-
-const RATING_TO_NAME = {
-  [Rating.Again]: 'Again',
-  [Rating.Hard]: 'Hard',
-  [Rating.Good]: 'Good',
-  [Rating.Easy]: 'Easy',
-} as Record<Rating, string>;
-
-const HOLD_TO_CANCEL_THRESHOLD_MS = 250;
 
 function GradeButton({
   grade,
