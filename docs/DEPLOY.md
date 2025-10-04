@@ -2,9 +2,17 @@
 
 0. Log in to wrangler. Create a new <PROJECT_NAME> Cloudflare Pages project.
 
+```
+pnpm i
+```
+
+```
+./node_modules/.bin/wrangler pages project create <PROJECT_NAME> --production-branch main
+```
+
 1. Update the environment variables in the Cloudflare dashboard.
 
-    1. Create your Google OAuth Client ID.
+    1. Create your Google OAuth Client ID. [Set up Google as an identity provider](https://developers.cloudflare.com/cloudflare-one/identity/idp-integration/google/)
     2. Provide the authorized JavaScript origins and the backend redirect URI. For example, `http://localhost, http://localhost:5173, https://spaced2.zsheng.app` and `https://api.spaced2.zsheng.app`.
     3. Set up the backend Cloudflare Worker.
 
