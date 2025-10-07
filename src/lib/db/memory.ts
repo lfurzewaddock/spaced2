@@ -1,10 +1,10 @@
 // This in-memory database is the data store for cards.
 // We only persist operations, which are applied again every time we restart the app.
 // An in-memory database is faster than fetching from IndexeDB whenever we need cards.
-import { db } from '@/lib/db/persistence';
-import { handleClientOperation, OperationWithId } from '@/lib/sync/operation';
-import { CardWithMetadata, Deck } from '@/lib/types';
-import { Card } from 'ts-fsrs';
+import { db } from "@/lib/db/persistence";
+import { handleClientOperation, OperationWithId } from "@/lib/sync/operation";
+import { CardWithMetadata, Deck } from "@/lib/types";
+import { Card } from "ts-fsrs";
 
 export type UndoGrade = {
   card: Card;
@@ -133,7 +133,7 @@ const getCardsForDeck = (deckId: string) => {
   }
 
   const cards = Object.entries(cardsMap)
-    .filter(([, count]) => count % 2 == 1)
+    .filter(([, count]) => count % 2 == 1) // Count is even when CL set shows that card is added to the deck
     .map(([cardId]) => memoryDb.cards[cardId])
     .filter((card) => !card.deleted);
 
