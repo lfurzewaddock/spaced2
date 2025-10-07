@@ -18,7 +18,9 @@ export default function DeckRoute() {
       search.toLowerCase(),
     ),
   );
-  const sortedCards = filteredCards.sort((a, b) => a.createdAt - b.createdAt);
+  const reverseChronologySortedCards = filteredCards.sort(
+    (a, b) => b.createdAt - a.createdAt,
+  );
 
   if (!deck) {
     return <div>Deck not found</div>;
@@ -39,7 +41,7 @@ export default function DeckRoute() {
         <p className="text-sm text-muted-foreground">{deck.description}</p>
       </div>
       <Separator className="my-4" />
-      <CardsTable cards={sortedCards} />
+      <CardsTable cards={reverseChronologySortedCards} />
     </div>
   );
 }
