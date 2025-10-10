@@ -8,30 +8,30 @@ type UploadError = {
   error: string;
 };
 
-type UploadResponse = UploadSuccess | UploadError;
+export type UploadResponse = UploadSuccess | UploadError;
 
 export async function uploadImage(
   image: File,
-  altText?: string
+  altText?: string,
 ): Promise<UploadResponse> {
   const formData = new FormData();
-  formData.append('file', image);
+  formData.append("file", image);
 
   if (altText) {
-    formData.append('metadata', JSON.stringify({ altText }));
+    formData.append("metadata", JSON.stringify({ altText }));
   }
 
   const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/upload`, {
-    method: 'POST',
+    method: "POST",
     body: formData,
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (response.status === 500) {
-    console.error('Unknown error uploading image', response);
+    console.error("Unknown error uploading image", response);
     return {
       success: false,
-      error: 'Failed to upload image',
+      error: "Failed to upload image",
     };
   }
 
@@ -40,5 +40,5 @@ export async function uploadImage(
 }
 
 export function constructImageMarkdownLink(fileKey: string, altText?: string) {
-  return `![${altText || 'Image'}](${import.meta.env.VITE_BACKEND_URL}/files/${fileKey})`;
+  return `![${altText || "Image"}](${import.meta.env.VITE_BACKEND_URL}/files/${fileKey})`;
 }
