@@ -1,5 +1,5 @@
-import MemoryDB from '@/lib/db/memory';
-import { useSyncExternalStore } from 'react';
+import MemoryDB from "@/lib/db/memory";
+import { useSyncExternalStore } from "react";
 
 function hashId(id: string): number {
   let hash = 0;
@@ -13,7 +13,7 @@ function hashId(id: string): number {
 export function useCards() {
   const snapshot = useSyncExternalStore(
     MemoryDB.subscribe,
-    MemoryDB.getSnapshot
+    MemoryDB.getSnapshot,
   );
   return snapshot.getCards();
 }
@@ -32,7 +32,7 @@ export function useReviewCards() {
 export function useDecks() {
   const snapshot = useSyncExternalStore(
     MemoryDB.subscribe,
-    MemoryDB.getSnapshot
+    MemoryDB.getSnapshot,
   );
   return snapshot.getDecks();
 }
@@ -40,7 +40,7 @@ export function useDecks() {
 export function useDeck(id: string) {
   const snapshot = useSyncExternalStore(
     MemoryDB.subscribe,
-    MemoryDB.getSnapshot
+    MemoryDB.getSnapshot,
   );
   return snapshot.getDeckById(id);
 }
@@ -48,7 +48,7 @@ export function useDeck(id: string) {
 export function useCardsForDeck(deckId: string) {
   const snapshot = useSyncExternalStore(
     MemoryDB.subscribe,
-    MemoryDB.getSnapshot
+    MemoryDB.getSnapshot,
   );
   return snapshot.getCardsForDeck(deckId);
 }
@@ -61,7 +61,7 @@ export function useCurrentCard() {
 export function useUndoStack() {
   const snapshot = useSyncExternalStore(
     MemoryDB.subscribe,
-    MemoryDB.getSnapshot
+    MemoryDB.getSnapshot,
   );
   return snapshot.getUndoStack();
 }

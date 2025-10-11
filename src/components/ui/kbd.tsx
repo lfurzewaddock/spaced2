@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 export const Kbd = ({
   className,
@@ -7,11 +7,11 @@ export const Kbd = ({
   return (
     <span
       className={cn(
-        'ml-auto text-xs tracking-widest text-muted-foreground',
-        className
+        "ml-auto text-xs tracking-widest text-muted-foreground",
+        className,
       )}
       {...props}
     />
   );
 };
-Kbd.displayName = 'Kbd';
+Kbd.displayName = "Kbd";

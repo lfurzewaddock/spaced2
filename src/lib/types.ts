@@ -1,4 +1,4 @@
-import { Card } from 'ts-fsrs';
+import { Card } from "ts-fsrs";
 
 export type CardWithMetadata = Card & {
   id: string;

@@ -1,25 +1,25 @@
-import FlashcardContent from '@/components/flashcard-content';
+import FlashcardContent from "@/components/flashcard-content";
 import {
   Carousel,
   CarouselApi,
   CarouselContent,
   CarouselItem,
-} from '@/components/ui/carousel';
-import { CardWithMetadata } from '@/lib/types';
-import { cn } from '@/lib/utils';
-import { useEffect, useState } from 'react';
+} from "@/components/ui/carousel";
+import { CardWithMetadata } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
-const FLIP_CARD_KEY = ' ';
+const FLIP_CARD_KEY = " ";
 
 function Dots({ current, count }: { current: number; count: number }) {
   return (
-    <div className='flex items-center justify-center gap-1'>
+    <div className="flex items-center justify-center gap-1">
       {Array.from({ length: count }).map((_, index) => (
         <div
           key={index}
           className={cn(
-            'w-2 h-2 rounded-full transition-colors',
-            current === index + 1 ? 'bg-primary' : 'bg-muted'
+            "w-2 h-2 rounded-full transition-colors",
+            current === index + 1 ? "bg-primary" : "bg-muted",
           )}
         />
       ))}
@@ -42,7 +42,7 @@ export default function MobileReviewCarousel({
       if (!api) return;
       api.scrollTo(0, true);
     },
-    [card, api]
+    [card, api],
   );
 
   useEffect(
@@ -54,7 +54,7 @@ export default function MobileReviewCarousel({
       setCount(api.scrollSnapList().length);
       setCurrent(api.selectedScrollSnap() + 1);
 
-      api.on('select', () => {
+      api.on("select", () => {
         setCurrent(api.selectedScrollSnap() + 1);
       });
 
@@ -68,24 +68,24 @@ export default function MobileReviewCarousel({
           api.scrollTo(nextIndex, true);
         }
       };
-      window.addEventListener('keydown', handleSpacePress);
-      return () => window.removeEventListener('keydown', handleSpacePress);
+      window.addEventListener("keydown", handleSpacePress);
+      return () => window.removeEventListener("keydown", handleSpacePress);
     },
-    [api]
+    [api],
   );
 
   return (
-    <div className='flex flex-col items-center gap-2 sm:hidden w-full pt-4'>
+    <div className="flex flex-col items-center gap-2 sm:hidden w-full pt-4">
       <Dots current={current} count={count} />
-      <Carousel className='w-full max-w-md pt-3' setApi={setApi}>
+      <Carousel className="w-full max-w-md pt-3" setApi={setApi}>
         <CarouselContent>
           <CarouselItem>
-            <div className='p-1'>
+            <div className="p-1">
               <FlashcardContent content={card.front} />
             </div>
           </CarouselItem>
           <CarouselItem>
-            <div className='p-1'>
+            <div className="p-1">
               <FlashcardContent content={card.back} />
             </div>
           </CarouselItem>

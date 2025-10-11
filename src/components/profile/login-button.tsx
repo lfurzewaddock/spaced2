@@ -1,10 +1,10 @@
-import { GoogleSignIn } from '@/components/auth/google-sign-in';
-import VerifyOtpForm from '@/components/form/verify-otp-form';
-import BouncyButton from '@/components/bouncy-button';
-import { LoginForm } from '@/components/form/login-form';
-import { RegisterForm } from '@/components/form/register-form';
-import { emitChange } from '@/components/hooks/logged-in-status';
-import { useOnlineStatus } from '@/components/hooks/online-status';
+import { GoogleSignIn } from "@/components/auth/google-sign-in";
+import VerifyOtpForm from "@/components/form/verify-otp-form";
+import BouncyButton from "@/components/bouncy-button";
+import { LoginForm } from "@/components/form/login-form";
+import { RegisterForm } from "@/components/form/register-form";
+import { emitChange } from "@/components/hooks/logged-in-status";
+import { useOnlineStatus } from "@/components/hooks/online-status";
 import {
   Dialog,
   DialogContent,
@@ -12,17 +12,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { login, register, registerAndSync, verifyOtp } from '@/lib/auth';
+} from "@/components/ui/dialog";
+import { login, register, registerAndSync, verifyOtp } from "@/lib/auth";
 import {
   LoginFormValues,
   RegisterFormValues,
   VerifyOtpFormValues,
-} from '@/lib/form-schema';
-import { cn } from '@/lib/utils';
-import { LogIn } from 'lucide-react';
-import { useState } from 'react';
-import { toast } from 'sonner';
+} from "@/lib/form-schema";
+import { cn } from "@/lib/utils";
+import { LogIn } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 type LoginFormDialogContentProps = {
   onSuccess: () => void;
@@ -31,8 +31,8 @@ type LoginFormDialogContentProps = {
 export function LoginFormDialogContent({
   onSuccess,
 }: LoginFormDialogContentProps) {
-  const [formType, setFormType] = useState<'login' | 'register' | 'verify'>(
-    'login'
+  const [formType, setFormType] = useState<"login" | "register" | "verify">(
+    "login",
   );
   const [registeredEmail, setRegisteredEmail] = useState<string | null>(null);
 
@@ -42,7 +42,7 @@ export function LoginFormDialogContent({
     if (!response.success) {
       if (response.isTempUser) {
         setRegisteredEmail(data.email);
-        setFormType('verify');
+        setFormType("verify");
       } else {
         toast.error(response.message);
       }
@@ -62,12 +62,12 @@ export function LoginFormDialogContent({
     }
 
     setRegisteredEmail(data.email);
-    setFormType('verify');
+    setFormType("verify");
   };
 
   const handleVerifyOtp = async (data: VerifyOtpFormValues) => {
     if (!registeredEmail) {
-      toast.error('No email registered');
+      toast.error("No email registered");
       return;
     }
 
@@ -83,51 +83,51 @@ export function LoginFormDialogContent({
   };
 
   return (
-    <div className=''>
+    <div className="">
       <DialogHeader>
         <DialogTitle>Sign in</DialogTitle>
         <DialogDescription>
-          {formType === 'login'
-            ? 'Enter your email and password to sign in.'
-            : formType === 'register'
-            ? 'Enter your email and password to register.'
-            : 'Enter the one-time password sent to your email.'}
+          {formType === "login"
+            ? "Enter your email and password to sign in."
+            : formType === "register"
+              ? "Enter your email and password to register."
+              : "Enter the one-time password sent to your email."}
         </DialogDescription>
 
-        {formType === 'login' ? (
+        {formType === "login" ? (
           <LoginForm onSubmit={handleLogin} />
-        ) : formType === 'register' ? (
+        ) : formType === "register" ? (
           <RegisterForm onSubmit={handleRegister} />
         ) : (
           <VerifyOtpForm onSubmit={handleVerifyOtp} />
         )}
 
-        {formType !== 'verify' && (
-          <div className='flex justify-center mb-4'>
+        {formType !== "verify" && (
+          <div className="flex justify-center mb-4">
             <GoogleSignIn />
           </div>
         )}
 
-        {formType === 'login' && (
-          <div className='text-sm text-center text-gray-500'>
-            Don't have an account?{' '}
+        {formType === "login" && (
+          <div className="text-sm text-center text-gray-500">
+            Don't have an account?{" "}
             <a
-              href='#'
-              className='text-blue-600 hover:underline'
-              onClick={() => setFormType('register')}
+              href="#"
+              className="text-blue-600 hover:underline"
+              onClick={() => setFormType("register")}
             >
               Sign up
             </a>
           </div>
         )}
 
-        {formType === 'register' && (
-          <div className='text-sm text-center text-gray-500'>
-            Already have an account?{' '}
+        {formType === "register" && (
+          <div className="text-sm text-center text-gray-500">
+            Already have an account?{" "}
             <a
-              href='#'
-              className='text-blue-600 hover:underline'
-              onClick={() => setFormType('login')}
+              href="#"
+              className="text-blue-600 hover:underline"
+              onClick={() => setFormType("login")}
             >
               Sign in
             </a>
@@ -143,13 +143,13 @@ export function LoginButton() {
   const online = useOnlineStatus();
 
   const onLoginSuccess = async () => {
-    toast.success('Logged in!');
+    toast.success("Logged in!");
     setIsOpen(true);
 
     toast.promise(registerAndSync(), {
-      loading: 'Syncing...',
-      success: 'Synced!',
-      error: 'Error syncing',
+      loading: "Syncing...",
+      success: "Synced!",
+      error: "Error syncing",
     });
   };
 
@@ -158,21 +158,21 @@ export function LoginButton() {
       <DialogTrigger asChild>
         <button>
           <BouncyButton
-            variant='large'
+            variant="large"
             className={cn(
-              'bg-background dark:bg-muted/50 w-full rounded-xl py-4 px-6',
-              !online && 'cursor-not-allowed text-muted-foreground'
+              "bg-background dark:bg-muted/50 w-full rounded-xl py-4 px-6",
+              !online && "cursor-not-allowed text-muted-foreground",
             )}
             disabled={!online}
           >
-            <div className='flex justify-between'>
+            <div className="flex justify-between">
               <span>Sign in</span>
-              <LogIn className='w-6 h-6 text-muted-foreground' />
+              <LogIn className="w-6 h-6 text-muted-foreground" />
             </div>
           </BouncyButton>
         </button>
       </DialogTrigger>
-      <DialogContent className='w-full h-max transition-all'>
+      <DialogContent className="w-full h-max transition-all">
         <LoginFormDialogContent onSuccess={onLoginSuccess} />
       </DialogContent>
     </Dialog>

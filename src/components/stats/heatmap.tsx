@@ -1,13 +1,13 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { cn } from '@/lib/utils';
-import * as React from 'react';
-import { ReviewLog } from 'ts-fsrs';
+} from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+import * as React from "react";
+import { ReviewLog } from "ts-fsrs";
 
 interface HeatmapProps {
   reviewLogs: ReviewLog[];
@@ -32,14 +32,14 @@ export function Heatmap({ reviewLogs }: HeatmapProps) {
     const dailyCounts = reviewLogs
       .filter((log) => new Date(log.review) >= yearAgo)
       .reduce((acc: Record<string, number>, log) => {
-        const date = new Date(log.review).toISOString().split('T')[0];
+        const date = new Date(log.review).toISOString().split("T")[0];
         acc[date] = (acc[date] || 0) + 1;
         return acc;
       }, {});
 
     // Map dates to their counts
     return dates.map((date) => {
-      const dateStr = date.toISOString().split('T')[0];
+      const dateStr = date.toISOString().split("T")[0];
       return {
         date: dateStr,
         count: dailyCounts[dateStr] || 0,
@@ -48,12 +48,12 @@ export function Heatmap({ reviewLogs }: HeatmapProps) {
   }, [reviewLogs]);
 
   const getColorClass = (count: number) => {
-    if (count === 0) return 'bg-muted';
-    if (count <= 3) return 'bg-cyan-100';
-    if (count <= 6) return 'bg-cyan-200';
-    if (count <= 9) return 'bg-cyan-300';
-    if (count <= 12) return 'bg-cyan-400';
-    return 'bg-cyan-500';
+    if (count === 0) return "bg-muted";
+    if (count <= 3) return "bg-cyan-100";
+    if (count <= 6) return "bg-cyan-200";
+    if (count <= 9) return "bg-cyan-300";
+    if (count <= 12) return "bg-cyan-400";
+    return "bg-cyan-500";
   };
 
   const weeks = React.useMemo(() => {
@@ -66,8 +66,8 @@ export function Heatmap({ reviewLogs }: HeatmapProps) {
 
   const formatTooltipDate = (dateStr: string) => {
     const date = new Date(dateStr);
-    return `${date.toLocaleString('default', {
-      month: 'long',
+    return `${date.toLocaleString("default", {
+      month: "long",
     })} ${date.getDate()}`;
   };
 
@@ -77,17 +77,17 @@ export function Heatmap({ reviewLogs }: HeatmapProps) {
         <CardTitle>Review Heatmap</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className='flex gap-1 overflow-x-auto pb-4'>
+        <div className="flex gap-1 overflow-x-auto pb-4">
           {weeks.map((week, weekIndex) => (
-            <div key={weekIndex} className='flex flex-col gap-1'>
+            <div key={weekIndex} className="flex flex-col gap-1">
               {week.map(({ date, count }) => (
                 <TooltipProvider key={date} delayDuration={50}>
                   <Tooltip>
                     <TooltipTrigger>
                       <div
                         className={cn(
-                          'h-3 w-3 rounded-sm',
-                          getColorClass(count)
+                          "h-3 w-3 rounded-sm",
+                          getColorClass(count),
                         )}
                       />
                     </TooltipTrigger>
@@ -102,15 +102,15 @@ export function Heatmap({ reviewLogs }: HeatmapProps) {
             </div>
           ))}
         </div>
-        <div className='mt-2 flex items-center gap-2 text-sm text-muted-foreground'>
+        <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
           <span>Less</span>
-          <div className='flex gap-1'>
-            <div className='h-3 w-3 rounded-sm bg-muted' />
-            <div className='h-3 w-3 rounded-sm bg-cyan-100' />
-            <div className='h-3 w-3 rounded-sm bg-cyan-200' />
-            <div className='h-3 w-3 rounded-sm bg-cyan-300' />
-            <div className='h-3 w-3 rounded-sm bg-cyan-400' />
-            <div className='h-3 w-3 rounded-sm bg-cyan-500' />
+          <div className="flex gap-1">
+            <div className="h-3 w-3 rounded-sm bg-muted" />
+            <div className="h-3 w-3 rounded-sm bg-cyan-100" />
+            <div className="h-3 w-3 rounded-sm bg-cyan-200" />
+            <div className="h-3 w-3 rounded-sm bg-cyan-300" />
+            <div className="h-3 w-3 rounded-sm bg-cyan-400" />
+            <div className="h-3 w-3 rounded-sm bg-cyan-500" />
           </div>
           <span>More</span>
         </div>

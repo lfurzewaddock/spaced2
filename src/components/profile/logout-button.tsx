@@ -1,5 +1,5 @@
-import BouncyButton from '@/components/bouncy-button';
-import { useOnlineStatus } from '@/components/hooks/online-status';
+import BouncyButton from "@/components/bouncy-button";
+import { useOnlineStatus } from "@/components/hooks/online-status";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,12 +10,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { logout } from '@/lib/auth';
-import SyncEngine from '@/lib/sync/engine';
-import { cn } from '@/lib/utils';
-import { LogOut } from 'lucide-react';
-import { toast } from 'sonner';
+} from "@/components/ui/alert-dialog";
+import { logout } from "@/lib/auth";
+import SyncEngine from "@/lib/sync/engine";
+import { cn } from "@/lib/utils";
+import { LogOut } from "lucide-react";
+import { toast } from "sonner";
 
 export function LogoutButton() {
   const online = useOnlineStatus();
@@ -23,7 +23,7 @@ export function LogoutButton() {
     const logoutResponse = await logout();
 
     if (!logoutResponse.success) {
-      console.error('Failed to logout', logoutResponse.message);
+      console.error("Failed to logout", logoutResponse.message);
       throw new Error(logoutResponse.message);
     }
 
@@ -36,15 +36,15 @@ export function LogoutButton() {
       <AlertDialogTrigger asChild>
         <button>
           <BouncyButton
-            variant='large'
+            variant="large"
             className={cn(
-              'bg-background dark:bg-muted/50 w-full rounded-xl py-4 px-6  cursor-pointer transition-all duration-100 ease-out',
-              !online && 'cursor-not-allowed text-muted-foreground'
+              "bg-background dark:bg-muted/50 w-full rounded-xl py-4 px-6  cursor-pointer transition-all duration-100 ease-out",
+              !online && "cursor-not-allowed text-muted-foreground",
             )}
           >
-            <div className='flex justify-between'>
+            <div className="flex justify-between">
               <span>Sign out</span>
-              <LogOut className='w-6 h-6 text-muted-foreground' />
+              <LogOut className="w-6 h-6 text-muted-foreground" />
             </div>
           </BouncyButton>
         </button>
@@ -62,9 +62,9 @@ export function LogoutButton() {
           <AlertDialogAction
             onClick={() => {
               toast.promise(handleLogout, {
-                loading: 'Signing out...',
-                success: 'Signed out successfully',
-                error: 'Failed to sign out',
+                loading: "Signing out...",
+                success: "Signed out successfully",
+                error: "Failed to sign out",
               });
             }}
           >

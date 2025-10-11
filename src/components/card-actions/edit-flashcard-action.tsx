@@ -1,15 +1,15 @@
-import EditFlashcardResponsive from '@/components/card-actions/edit-flashcard-responsive';
-import { useCurrentCard } from '@/components/hooks/query';
-import { Button } from '@/components/ui/button';
+import EditFlashcardResponsive from "@/components/card-actions/edit-flashcard-responsive";
+import { useCurrentCard } from "@/components/hooks/query";
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { CardContentFormValues } from '@/lib/form-schema';
-import { updateCardContentOperation } from '@/lib/sync/operation';
-import { PencilIcon } from 'lucide-react';
-import { useState } from 'react';
+} from "@/components/ui/tooltip";
+import { CardContentFormValues } from "@/lib/form-schema";
+import { updateCardContentOperation } from "@/lib/sync/operation";
+import { PencilIcon } from "lucide-react";
+import { useState } from "react";
 
 export default function EditFlashcardAction() {
   const currentCard = useCurrentCard();
@@ -36,8 +36,8 @@ export default function EditFlashcardAction() {
       <TooltipProvider delayDuration={300}>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button variant='ghost' size='icon' onClick={() => setOpen(true)}>
-              <PencilIcon className='h-5 w-5' />
+            <Button variant="ghost" size="icon" onClick={() => setOpen(true)}>
+              <PencilIcon className="h-5 w-5" />
             </Button>
           </TooltipTrigger>
         </Tooltip>

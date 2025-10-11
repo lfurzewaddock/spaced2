@@ -3,13 +3,13 @@ import {
   RATING_NUMBER_TO_NAME,
   STATE_NAME_TO_NUMBER,
   STATE_NUMBER_TO_NAME,
-} from '@/lib/card-mapping';
+} from "@/lib/card-mapping";
 import {
   OperationWithId,
   ReviewLogDeletedOperation,
   ReviewLogOperation,
-} from '@/lib/sync/operation';
-import { Card, fsrs, generatorParameters, Grade, ReviewLog } from 'ts-fsrs';
+} from "@/lib/sync/operation";
+import { Card, fsrs, generatorParameters, Grade, ReviewLog } from "ts-fsrs";
 
 const params = generatorParameters({
   enable_fuzz: true,
@@ -20,7 +20,7 @@ const f = fsrs(params);
 export function gradeCard(
   card: Card,
   grade: Grade,
-  now = new Date()
+  now = new Date(),
 ): {
   nextCard: Card;
   reviewLog: ReviewLog;
@@ -46,7 +46,7 @@ export function gradeCard(
  * Converts a review log operation to a review log.
  */
 export function reviewLogOperationToReviewLog(
-  operation: ReviewLogOperation
+  operation: ReviewLogOperation,
 ): ReviewLog & { duration: number } {
   return {
     ...operation.payload,
@@ -58,10 +58,10 @@ export function reviewLogOperationToReviewLog(
 export function reviewLogToReviewLogOperation(
   reviewLog: ReviewLog,
   cardId: string,
-  duration: number = 0
+  duration: number = 0,
 ): ReviewLogOperation {
   return {
-    type: 'reviewLog',
+    type: "reviewLog",
     payload: {
       ...reviewLog,
       cardId,
@@ -79,12 +79,12 @@ export function reviewLogToReviewLogOperation(
  * Processes review log operations and returns a list of review logs.
  */
 export function processReviewLogOperations(
-  operations: OperationWithId[]
+  operations: OperationWithId[],
 ): (ReviewLog & { duration: number })[] {
   const reviewLogMap: Record<string, ReviewLog & { duration: number }> = {};
 
   const reviewLogOperations = operations.filter(
-    (op): op is ReviewLogOperation & { _id: number } => op.type === 'reviewLog'
+    (op): op is ReviewLogOperation & { _id: number } => op.type === "reviewLog",
   );
 
   reviewLogOperations.forEach((op) => {
@@ -93,7 +93,7 @@ export function processReviewLogOperations(
 
   const reviewLogDeletedOperations = operations.filter(
     (op): op is ReviewLogDeletedOperation & { _id: number } =>
-      op.type === 'reviewLogDeleted'
+      op.type === "reviewLogDeleted",
   );
   const reviewLogsToDeleteSet = new Set<string>();
   reviewLogDeletedOperations.forEach((op) => {

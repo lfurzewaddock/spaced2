@@ -1,10 +1,10 @@
-import { CardWithMetadata, Deck } from '@/lib/types';
-import { createEmptyCard } from 'ts-fsrs';
+import { CardWithMetadata, Deck } from "@/lib/types";
+import { createEmptyCard } from "ts-fsrs";
 
-export const defaultCard: Omit<CardWithMetadata, 'id'> = {
+export const defaultCard: Omit<CardWithMetadata, "id"> = {
   ...createEmptyCard(),
-  front: '',
-  back: '',
+  front: "",
+  back: "",
   deleted: false,
 
   bookmarked: false,
@@ -19,9 +19,9 @@ export const defaultCard: Omit<CardWithMetadata, 'id'> = {
   createdAt: 0,
 };
 
-export const defaultDeck: Omit<Deck, 'id'> = {
-  name: '',
-  description: '',
+export const defaultDeck: Omit<Deck, "id"> = {
+  name: "",
+  description: "",
   deleted: false,
   lastModified: 0,
 };

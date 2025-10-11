@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "pnpm run build && wrangler pages dev ./dist",
     "deploy": "pnpm run build && wrangler pages deploy ./dist --project-name spaced2",
-    "generate-pwa-assets": "pwa-assets-generator --preset minimal-2023 public/telescope.svg"
+    "generate-pwa-assets": "pwa-assets-generator --preset minimal-2023 public/telescope.svg",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css}\""
   },
   "dependencies": {
     "@highlightjs/cdn-assets": "^11.11.1",
@@ -76,6 +77,7 @@
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.12.0",
     "postcss": "^8.4.49",
+    "prettier": "^3.6.2",
     "tailwindcss": "^4.0.0",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.15.0",

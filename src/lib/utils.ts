@@ -1,13 +1,13 @@
-import { clsx, type ClassValue } from 'clsx';
-import rehypeHighlight from 'rehype-highlight';
-import rehypeKatex from 'rehype-katex';
-import rehypeStringify from 'rehype-stringify';
-import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
-import remarkParse from 'remark-parse';
-import remarkRehype from 'remark-rehype';
-import { twMerge } from 'tailwind-merge';
-import { unified } from 'unified';
+import { clsx, type ClassValue } from "clsx";
+import rehypeHighlight from "rehype-highlight";
+import rehypeKatex from "rehype-katex";
+import rehypeStringify from "rehype-stringify";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import { twMerge } from "tailwind-merge";
+import { unified } from "unified";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -32,7 +32,7 @@ export function markdownToHtml(markdown: string) {
  * @returns
  */
 export function excludeLinksFromMarkdown(markdown: string) {
-  return markdown.replace(/!\[.*?\]\((.*?)\)/g, '');
+  return markdown.replace(/!\[.*?\]\((.*?)\)/g, "");
 }
 
 export function debounce(func: () => void, delay: number = 300) {
@@ -47,14 +47,14 @@ export function debounce(func: () => void, delay: number = 300) {
 
 export function isEventTargetInput(e: KeyboardEvent) {
   return (
-    ['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName) ||
+    ["INPUT", "TEXTAREA"].includes((e.target as HTMLElement)?.tagName) ||
     (e.target as HTMLElement)?.isContentEditable
   );
 }
 
 export async function delayAfter<T>(
   promise: Promise<T>,
-  delay: number
+  delay: number,
 ): Promise<T> {
   const result = await promise;
   await new Promise((resolve) => setTimeout(resolve, delay));

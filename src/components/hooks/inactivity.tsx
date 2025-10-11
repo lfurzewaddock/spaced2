@@ -1,5 +1,5 @@
-import { debounce } from '@/lib/utils';
-import { useEffect, useRef, useState } from 'react';
+import { debounce } from "@/lib/utils";
+import { useEffect, useRef, useState } from "react";
 
 const INACTIVITY_THRESHOLD_MS = 2 * 60 * 1000; // 2 minutes
 const DEBOUNCE_WAIT_MS = 1000; // 1 second
@@ -9,7 +9,7 @@ type UseActiveStartTimeOptions = {
 };
 
 export function useActiveStartTime(
-  options?: UseActiveStartTimeOptions
+  options?: UseActiveStartTimeOptions,
 ): number {
   const now = Date.now();
   const [startTime, setStartTime] = useState(now);
@@ -41,24 +41,24 @@ export function useActiveStartTime(
 
     // Track user interactions
     const events = [
-      'mousedown',
-      'mousemove',
-      'keydown',
-      'scroll',
-      'touchstart',
+      "mousedown",
+      "mousemove",
+      "keydown",
+      "scroll",
+      "touchstart",
     ];
 
     events.forEach((event) => {
       window.addEventListener(event, handleUserActivity);
     });
     // When the user goes to another page and comes back, we should restart
-    window.addEventListener('visibilitychange', resetStartTime);
+    window.addEventListener("visibilitychange", resetStartTime);
 
     return () => {
       events.forEach((event) => {
         window.removeEventListener(event, handleUserActivity);
       });
-      window.removeEventListener('visibilitychange', resetStartTime);
+      window.removeEventListener("visibilitychange", resetStartTime);
     };
   }, [handleUserActivity, options?.id]);
 

@@ -1,4 +1,4 @@
-import MemoryDB from '@/lib/db/memory';
+import MemoryDB from "@/lib/db/memory";
 
 export function searchForLinks(): Map<string, string> {
   const cards = MemoryDB.getCards();

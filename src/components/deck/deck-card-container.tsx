@@ -1,6 +1,6 @@
-import DeckCard from '@/components/deck/deck-card';
-import DeckCardSkeleton from '@/components/deck/deck-card-skeleton';
-import { useCardsForDeck, useDeck } from '@/components/hooks/query';
+import DeckCard from "@/components/deck/deck-card";
+import DeckCardSkeleton from "@/components/deck/deck-card-skeleton";
+import { useCardsForDeck, useDeck } from "@/components/hooks/query";
 
 type DeckCardContainerProps = {
   id: string;
@@ -28,4 +28,4 @@ export default function DeckCardContainer({ id }: DeckCardContainerProps) {
   );
 }
 
-DeckCardContainer.displayName = 'Deck';
+DeckCardContainer.displayName = "Deck";

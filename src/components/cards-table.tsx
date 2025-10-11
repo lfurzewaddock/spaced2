@@ -1,4 +1,4 @@
-import EditFlashcardResponsive from '@/components/card-actions/edit-flashcard-responsive';
+import EditFlashcardResponsive from "@/components/card-actions/edit-flashcard-responsive";
 import {
   Table,
   TableBody,
@@ -7,15 +7,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { CardContentFormValues } from '@/lib/form-schema';
-import { updateCardContentOperation } from '@/lib/sync/operation';
-import { CardWithMetadata } from '@/lib/types';
-import { useState } from 'react';
+} from "@/components/ui/table";
+import { CardContentFormValues } from "@/lib/form-schema";
+import { updateCardContentOperation } from "@/lib/sync/operation";
+import { CardWithMetadata } from "@/lib/types";
+import { useState } from "react";
 
 const FlashcardTable = ({ cards }: { cards: CardWithMetadata[] }) => {
   const [selectedCard, setSelectedCard] = useState<CardWithMetadata | null>(
-    null
+    null,
   );
   const [open, setOpen] = useState(false);
 
@@ -33,7 +33,7 @@ const FlashcardTable = ({ cards }: { cards: CardWithMetadata[] }) => {
   };
 
   return (
-    <div className='rounded-md border animate-fade-in'>
+    <div className="rounded-md border animate-fade-in">
       {selectedCard && (
         <EditFlashcardResponsive
           card={selectedCard}
@@ -45,9 +45,9 @@ const FlashcardTable = ({ cards }: { cards: CardWithMetadata[] }) => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className='w-48'>Question</TableHead>
-            <TableHead className='w-48'>Answer</TableHead>
-            <TableHead className='w-32'>Created</TableHead>
+            <TableHead className="w-48">Question</TableHead>
+            <TableHead className="w-48">Answer</TableHead>
+            <TableHead className="w-32">Created</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -59,7 +59,7 @@ const FlashcardTable = ({ cards }: { cards: CardWithMetadata[] }) => {
                 setOpen(true);
               }}
             >
-              <TableCell className='font-medium'>{card.front}</TableCell>
+              <TableCell className="font-medium">{card.front}</TableCell>
               <TableCell>{card.back}</TableCell>
               <TableCell>
                 {new Date(card.createdAt).toLocaleDateString()}
@@ -72,7 +72,7 @@ const FlashcardTable = ({ cards }: { cards: CardWithMetadata[] }) => {
             <TableRow>
               <TableCell
                 colSpan={3}
-                className='text-muted-foreground text-center h-16'
+                className="text-muted-foreground text-center h-16"
               >
                 No cards found
               </TableCell>

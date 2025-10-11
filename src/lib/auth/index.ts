@@ -1,5 +1,5 @@
-import SyncEngine from '@/lib/sync/engine';
-import { setClientId, setSessionExpiry } from '@/lib/sync/meta';
+import SyncEngine from "@/lib/sync/engine";
+import { setClientId, setSessionExpiry } from "@/lib/sync/meta";
 
 const SESSION_DURATION_MS = 1000 * 60 * 60 * 24 * 30 - 1000 * 60; // 30 days with leeway
 
@@ -13,23 +13,23 @@ type LoginResponse =
       isTempUser: boolean;
     };
 
-const UNAUTHORIZED_MESSAGE = 'Invalid email or password';
-const UNKNOWN_ERROR_MESSAGE = 'An unknown error occurred';
+const UNAUTHORIZED_MESSAGE = "Invalid email or password";
+const UNKNOWN_ERROR_MESSAGE = "An unknown error occurred";
 
 export async function login(
   email: string,
-  password: string
+  password: string,
 ): Promise<LoginResponse> {
   const response = await fetch(
     `${import.meta.env.VITE_BACKEND_URL}/auth/login`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
-      credentials: 'include',
-    }
+      credentials: "include",
+    },
   );
 
   if (response.status === 401) {
@@ -69,18 +69,18 @@ type RegisterResponse = {
 
 export async function register(
   email: string,
-  password: string
+  password: string,
 ): Promise<RegisterResponse> {
   const response = await fetch(
     `${import.meta.env.VITE_BACKEND_URL}/auth/register`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
-      credentials: 'include',
-    }
+      credentials: "include",
+    },
   );
 
   if (!response.ok) {
@@ -114,18 +114,18 @@ type VerifyOtpResponse = {
 
 export async function verifyOtp(
   email: string,
-  pin: string
+  pin: string,
 ): Promise<VerifyOtpResponse> {
   const response = await fetch(
     `${import.meta.env.VITE_BACKEND_URL}/auth/verify`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, token: pin }),
-      credentials: 'include',
-    }
+      credentials: "include",
+    },
   );
 
   if (!response.ok) {
@@ -158,13 +158,13 @@ export async function registerClient(): Promise<RegisterClientResponse> {
   const response = await fetch(
     `${import.meta.env.VITE_BACKEND_URL}/auth/clientId`,
     {
-      method: 'POST',
-      credentials: 'include',
-    }
+      method: "POST",
+      credentials: "include",
+    },
   );
 
   if (!response.ok) {
-    console.error('Failed to register client', response);
+    console.error("Failed to register client", response);
     return {
       success: false,
       message: UNKNOWN_ERROR_MESSAGE,
@@ -202,13 +202,13 @@ export async function logout(): Promise<LogoutResponse> {
   const response = await fetch(
     `${import.meta.env.VITE_BACKEND_URL}/auth/logout`,
     {
-      method: 'POST',
-      credentials: 'include',
-    }
+      method: "POST",
+      credentials: "include",
+    },
   );
 
   if (!response.ok) {
-    console.error('Failed to logout', response);
+    console.error("Failed to logout", response);
     return {
       success: false,
       message: UNKNOWN_ERROR_MESSAGE,

@@ -12,7 +12,7 @@ export class PromiseRateLimiterQueue {
 
   constructor(limit: number) {
     if (limit <= 0) {
-      throw new Error('Limit must be positive');
+      throw new Error("Limit must be positive");
     }
 
     this.limit = limit;
@@ -43,7 +43,7 @@ export class PromiseRateLimiterQueue {
    */
   private executeNext() {
     if (this.limit < 0) {
-      throw new Error('SHOULD NOT HAPPEN: limit is negative');
+      throw new Error("SHOULD NOT HAPPEN: limit is negative");
     }
 
     if (this.limit === 0) {

@@ -1,5 +1,5 @@
-import { getCachedImage, revokeImage } from '@/lib/images/db';
-import { useEffect, useRef } from 'react';
+import { getCachedImage, revokeImage } from "@/lib/images/db";
+import { useEffect, useRef } from "react";
 
 type CachedImagesContainerProps = {
   renderItem: (ref: React.RefObject<HTMLDivElement>) => React.ReactNode;
@@ -10,10 +10,10 @@ function isHTMLElement(node: Node): node is HTMLElement {
 }
 
 function isSrcUrl(src: string): boolean {
-  return src.startsWith('http');
+  return src.startsWith("http");
 }
 
-const DATA_IS_CACHED_SRC_ATTRIBUTE = 'data-is-cached-src';
+const DATA_IS_CACHED_SRC_ATTRIBUTE = "data-is-cached-src";
 
 /**
  * This component is used to indefinitely cache images.
@@ -31,12 +31,12 @@ export default function CachedImagesContainer({
 
     // The mutation observer might not have mounted in time on the initial render,
     // so we need to handle the images manually.
-    const imageNodes = ref.current.querySelectorAll('img');
+    const imageNodes = ref.current.querySelectorAll("img");
     handleAddedImages(Array.from(imageNodes));
 
     function handleAddedImages(nodes: HTMLElement[]) {
       const imageNodes = nodes.flatMap((node) =>
-        Array.from(node.querySelectorAll('img'))
+        Array.from(node.querySelectorAll("img")),
       );
 
       imageNodes.forEach(async (image) => {
@@ -53,10 +53,10 @@ export default function CachedImagesContainer({
 
     function handleRemovedImages(nodes: HTMLElement[]) {
       const imageNodes = nodes.flatMap((node) =>
-        Array.from(node.querySelectorAll('img'))
+        Array.from(node.querySelectorAll("img")),
       );
       const cachedImageNodes = imageNodes.filter((image) =>
-        image.getAttribute(DATA_IS_CACHED_SRC_ATTRIBUTE)
+        image.getAttribute(DATA_IS_CACHED_SRC_ATTRIBUTE),
       );
 
       cachedImageNodes.forEach((image) => {
@@ -71,17 +71,17 @@ export default function CachedImagesContainer({
 
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.type !== 'childList') return;
+        if (mutation.type !== "childList") return;
 
         if (mutation.addedNodes.length > 0) {
           handleAddedImages(
-            Array.from(mutation.addedNodes).filter(isHTMLElement)
+            Array.from(mutation.addedNodes).filter(isHTMLElement),
           );
         }
 
         if (mutation.removedNodes.length > 0) {
           handleRemovedImages(
-            Array.from(mutation.removedNodes).filter(isHTMLElement)
+            Array.from(mutation.removedNodes).filter(isHTMLElement),
           );
         }
       });

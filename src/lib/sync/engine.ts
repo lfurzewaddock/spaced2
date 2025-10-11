@@ -7,10 +7,10 @@
 // 2. Executed when we come online
 // 3. Executed when the visibility changes
 
-import { db } from '@/lib/db/persistence';
-import { getClientId, getSeqNo } from '@/lib/sync/meta';
-import { applyServerOperations } from '@/lib/sync/operation';
-import { pullFromServer, pushToServer } from '@/lib/sync/server';
+import { db } from "@/lib/db/persistence";
+import { getClientId, getSeqNo } from "@/lib/sync/meta";
+import { applyServerOperations } from "@/lib/sync/operation";
+import { pullFromServer, pushToServer } from "@/lib/sync/server";
 
 // Note: we don't have to handle race conditions as the operations being sent
 // to the server are idempotent.
@@ -48,22 +48,22 @@ async function syncToServer() {
     for (let i = 0; i < pendingOperations.length; i += MAX_OPERATIONS) {
       const chunk = pendingOperations.slice(i, i + MAX_OPERATIONS);
 
-      console.log('Pushing', chunk.length, 'operations');
+      console.log("Pushing", chunk.length, "operations");
       const { success } = await pushToServer(clientId, chunk);
 
       if (!success) {
-        console.error('Failed to push operations to server');
+        console.error("Failed to push operations to server");
         break;
       }
 
       // Delete the successfully sent chunk
       await db.pendingOperations.bulkDelete(chunk.map((op) => op._id));
       console.log(
-        'Synced',
+        "Synced",
         Math.min(i + MAX_OPERATIONS, pendingOperations.length),
-        'operations',
-        'of',
-        pendingOperations.length
+        "operations",
+        "of",
+        pendingOperations.length,
       );
     }
   } finally {
@@ -116,24 +116,24 @@ function start() {
 
   // Sync to server
   setInterval(syncToServer, SYNC_TO_SERVER_INTERVAL);
-  document.addEventListener('visibilitychange', () => {
+  document.addEventListener("visibilitychange", () => {
     // Sync when the user switches away
-    if (document.visibilityState === 'hidden') {
+    if (document.visibilityState === "hidden") {
       syncToServer();
     }
   });
-  document.addEventListener('online', () => {
+  document.addEventListener("online", () => {
     syncToServer();
   });
 
   // Sync from server
   setInterval(syncFromServerCached, SYNC_FROM_SERVER_INTERVAL);
-  document.addEventListener('online', () => {
+  document.addEventListener("online", () => {
     syncFromServerCached();
   });
   // Grab from serve whenever the user comes back
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') {
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
       syncFromServerCached();
     }
   });

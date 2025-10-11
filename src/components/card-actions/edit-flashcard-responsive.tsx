@@ -1,8 +1,8 @@
-import EditFlashcardDialog from '@/components/card-actions/edit-flashcard-dialog';
-import EditFlashcardDrawer from '@/components/card-actions/edit-flashcard-drawer';
-import { CardContentFormValues } from '@/lib/form-schema';
-import { CardWithMetadata } from '@/lib/types';
-import { useMediaQuery } from '@uidotdev/usehooks';
+import EditFlashcardDialog from "@/components/card-actions/edit-flashcard-dialog";
+import EditFlashcardDrawer from "@/components/card-actions/edit-flashcard-drawer";
+import { CardContentFormValues } from "@/lib/form-schema";
+import { CardWithMetadata } from "@/lib/types";
+import { useMediaQuery } from "@uidotdev/usehooks";
 
 type EditFlashcardResponsiveProps = {
   card: CardWithMetadata;
@@ -17,7 +17,7 @@ export default function EditFlashcardResponsive({
   open,
   onOpenChange,
 }: EditFlashcardResponsiveProps) {
-  const isMobile = useMediaQuery('(max-width: 640px)');
+  const isMobile = useMediaQuery("(max-width: 640px)");
 
   return isMobile ? (
     <EditFlashcardDrawer

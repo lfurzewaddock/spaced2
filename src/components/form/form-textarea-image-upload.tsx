@@ -1,4 +1,4 @@
-import { FormInputProps } from '@/components/form/input.types';
+import { FormInputProps } from "@/components/form/input.types";
 import {
   FormControl,
   FormDescription,
@@ -6,10 +6,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
-import { ClipboardEventHandler } from 'react';
-import { FieldValues } from 'react-hook-form';
+} from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
+import { ClipboardEventHandler } from "react";
+import { FieldValues } from "react-hook-form";
 
 type FormTextareaImageUploadProps<TFieldValues extends FieldValues> =
   FormInputProps<TFieldValues> & {
@@ -37,7 +37,7 @@ export function FormTextareaImageUpload<TFieldValues extends FieldValues>({
   const handlePaste: ClipboardEventHandler<HTMLTextAreaElement> = async (e) => {
     const dataTransfer = Array.from(e.clipboardData.items);
     const images: File[] = dataTransfer
-      .filter((item) => item.type.includes('image'))
+      .filter((item) => item.type.includes("image"))
       .map((item) => item.getAsFile())
       .filter((file): file is File => file !== null);
 
@@ -54,7 +54,7 @@ export function FormTextareaImageUpload<TFieldValues extends FieldValues>({
       name={name}
       disabled={disabled}
       render={({ field }) => (
-        <FormItem className='h-full'>
+        <FormItem className="h-full">
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
             <Textarea
@@ -73,4 +73,4 @@ export function FormTextareaImageUpload<TFieldValues extends FieldValues>({
   );
 }
 
-FormTextareaImageUpload.displayName = 'FormTextareaImageUpload';
+FormTextareaImageUpload.displayName = "FormTextareaImageUpload";

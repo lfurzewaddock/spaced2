@@ -1,4 +1,4 @@
-import { FormInputProps } from '@/components/form/input.types';
+import { FormInputProps } from "@/components/form/input.types";
 import {
   FormControl,
   FormDescription,
@@ -6,9 +6,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
-import { FieldValues } from 'react-hook-form';
+} from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
+import { FieldValues } from "react-hook-form";
 
 type FormTextareaProps<TFieldValues extends FieldValues> =
   FormInputProps<TFieldValues> & {
@@ -52,4 +52,4 @@ export function FormTextarea<TFieldValues extends FieldValues>({
   );
 }
 
-FormTextarea.displayName = 'FormTextarea';
+FormTextarea.displayName = "FormTextarea";

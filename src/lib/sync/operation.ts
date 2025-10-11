@@ -1,19 +1,19 @@
-import { STATE_NAME_TO_NUMBER, STATE_NUMBER_TO_NAME } from '@/lib/card-mapping';
-import MemoryDB, { UndoGrade } from '@/lib/db/memory';
-import { db } from '@/lib/db/persistence';
-import { gradeCard, reviewLogToReviewLogOperation } from '@/lib/review/review';
-import { defaultCard, defaultDeck } from '@/lib/sync/default';
-import { getSeqNo, setSeqNo } from '@/lib/sync/meta';
-import { CardWithMetadata, Deck } from '@/lib/types';
-import { createEmptyCard, Grade } from 'ts-fsrs';
-import { z } from 'zod';
+import { STATE_NAME_TO_NUMBER, STATE_NUMBER_TO_NAME } from "@/lib/card-mapping";
+import MemoryDB, { UndoGrade } from "@/lib/db/memory";
+import { db } from "@/lib/db/persistence";
+import { gradeCard, reviewLogToReviewLogOperation } from "@/lib/review/review";
+import { defaultCard, defaultDeck } from "@/lib/sync/default";
+import { getSeqNo, setSeqNo } from "@/lib/sync/meta";
+import { CardWithMetadata, Deck } from "@/lib/types";
+import { createEmptyCard, Grade } from "ts-fsrs";
+import { z } from "zod";
 
-export const states = ['New', 'Learning', 'Review', 'Relearning'] as const;
-export const ratings = ['Manual', 'Easy', 'Good', 'Hard', 'Again'] as const;
+export const states = ["New", "Learning", "Review", "Relearning"] as const;
+export const ratings = ["Manual", "Easy", "Good", "Hard", "Again"] as const;
 
 export const cardOperationSchema = z
   .object({
-    type: z.literal('card'),
+    type: z.literal("card"),
     payload: z.object({
       id: z.string(),
       // card variables
@@ -35,7 +35,7 @@ export type CardOperation = z.infer<typeof cardOperationSchema>;
 
 export const reviewLogOperationSchema = z
   .object({
-    type: z.literal('reviewLog'),
+    type: z.literal("reviewLog"),
     payload: z.object({
       id: z.string(),
       cardId: z.string(),
@@ -62,7 +62,7 @@ export type ReviewLogOperation = z.infer<typeof reviewLogOperationSchema>;
 
 export const reviewLogDeletedOperationSchema = z
   .object({
-    type: z.literal('reviewLogDeleted'),
+    type: z.literal("reviewLogDeleted"),
     payload: z.object({
       reviewLogId: z.string(),
       deleted: z.boolean(),
@@ -77,7 +77,7 @@ export type ReviewLogDeletedOperation = z.infer<
 
 export const cardContentOperationSchema = z
   .object({
-    type: z.literal('cardContent'),
+    type: z.literal("cardContent"),
     payload: z.object({
       cardId: z.string(),
       front: z.string(),
@@ -91,7 +91,7 @@ export type CardContentOperation = z.infer<typeof cardContentOperationSchema>;
 
 export const cardDeletedOperationSchema = z
   .object({
-    type: z.literal('cardDeleted'),
+    type: z.literal("cardDeleted"),
     payload: z.object({
       cardId: z.string(),
       deleted: z.boolean(),
@@ -104,7 +104,7 @@ export type CardDeletedOperation = z.infer<typeof cardDeletedOperationSchema>;
 
 export const cardBookmarkedOperationSchema = z
   .object({
-    type: z.literal('cardBookmarked'),
+    type: z.literal("cardBookmarked"),
     payload: z.object({
       cardId: z.string(),
       bookmarked: z.boolean(),
@@ -119,7 +119,7 @@ export type CardBookmarkedOperation = z.infer<
 
 export const cardSuspendedOperationSchema = z
   .object({
-    type: z.literal('cardSuspended'),
+    type: z.literal("cardSuspended"),
     payload: z.object({
       cardId: z.string(),
       suspended: z.coerce.date(),
@@ -134,7 +134,7 @@ export type CardSuspendedOperation = z.infer<
 
 export const deckOperationSchema = z
   .object({
-    type: z.literal('deck'),
+    type: z.literal("deck"),
     payload: z.object({
       id: z.string(),
       name: z.string(),
@@ -149,7 +149,7 @@ export type DeckOperation = z.infer<typeof deckOperationSchema>;
 
 export const updateDeckCardOperationSchema = z
   .object({
-    type: z.literal('updateDeckCard'),
+    type: z.literal("updateDeckCard"),
     payload: z.object({
       deckId: z.string(),
       cardId: z.string(),
@@ -195,7 +195,7 @@ export const server2ClientSyncSchema = z.object({
       updateDeckCardOperationSchema.extend({ seqNo: z.number() }),
       reviewLogOperationSchema.extend({ seqNo: z.number() }),
       reviewLogDeletedOperationSchema.extend({ seqNo: z.number() }),
-    ])
+    ]),
   ),
 });
 export type Server2Client<T extends Operation> = T & { seqNo: number };
@@ -203,7 +203,7 @@ export type Server2Client<T extends Operation> = T & { seqNo: number };
 export function emptyCardToOperations(card: CardWithMetadata): Operation[] {
   const now = Date.now();
   const cardOperation: CardOperation = {
-    type: 'card',
+    type: "card",
     payload: {
       id: card.id,
       due: card.due,
@@ -220,7 +220,7 @@ export function emptyCardToOperations(card: CardWithMetadata): Operation[] {
   };
 
   const cardContentOperation: CardContentOperation = {
-    type: 'cardContent',
+    type: "cardContent",
     payload: {
       cardId: card.id,
       front: card.front,
@@ -234,10 +234,10 @@ export function emptyCardToOperations(card: CardWithMetadata): Operation[] {
 
 function cardDeckOperations(
   cardId: string,
-  decks: string[]
+  decks: string[],
 ): UpdateDeckCardOperation[] {
   return decks.map((deckId) => ({
-    type: 'updateDeckCard',
+    type: "updateDeckCard",
     payload: { deckId, cardId, clCount: 1 },
     timestamp: Date.now(),
   }));
@@ -253,7 +253,7 @@ function cardDeckOperations(
 export async function createNewCard(
   front: string,
   back: string,
-  decks: string[] = []
+  decks: string[] = [],
 ) {
   const card: CardWithMetadata = {
     ...createEmptyCard(),
@@ -275,7 +275,7 @@ export async function createNewCard(
     const result = handleClientOperation(operation);
     if (!result.applied) {
       throw new Error(
-        'SHOULD NOT HAPPEN - there should not be conflict when creating new cards'
+        "SHOULD NOT HAPPEN - there should not be conflict when creating new cards",
       );
     }
   }
@@ -289,10 +289,10 @@ export async function createNewCard(
 export async function updateCardContentOperation(
   cardId: string,
   front: string,
-  back: string
+  back: string,
 ) {
   const cardOperation: CardContentOperation = {
-    type: 'cardContent',
+    type: "cardContent",
     payload: {
       cardId,
       front,
@@ -309,18 +309,18 @@ const MAX_DURATION_PER_CARD_MS = 2 * 60 * 1000; // 2 minutes
 export async function gradeCardOperation(
   card: CardWithMetadata,
   grade: Grade,
-  providedDuration: number = 0
+  providedDuration: number = 0,
 ) {
   const { nextCard, reviewLog } = gradeCard(card, grade);
   if (providedDuration > MAX_DURATION_PER_CARD_MS) {
     console.warn(
-      `Duration for card ${card.id} was ${providedDuration}ms, clamping to ${MAX_DURATION_PER_CARD_MS}ms`
+      `Duration for card ${card.id} was ${providedDuration}ms, clamping to ${MAX_DURATION_PER_CARD_MS}ms`,
     );
   }
 
   const duration = Math.min(providedDuration, MAX_DURATION_PER_CARD_MS);
   const cardOperation: CardOperation = {
-    type: 'card',
+    type: "card",
     payload: {
       id: card.id,
       due: nextCard.due,
@@ -339,12 +339,12 @@ export async function gradeCardOperation(
   const reviewLogOperation = reviewLogToReviewLogOperation(
     reviewLog,
     card.id,
-    duration
+    duration,
   );
   const cardOperationResult = handleCardOperation(cardOperation);
   if (!cardOperationResult.applied) {
     throw new Error(
-      'SHOULD NOT HAPPEN - there should not be conflict when grading cards'
+      "SHOULD NOT HAPPEN - there should not be conflict when grading cards",
     );
   }
 
@@ -389,7 +389,7 @@ export async function undoGradeCard(): Promise<UndoGradeResult> {
 
   const now = Date.now();
   const reviewLogDeletedOperation: ReviewLogDeletedOperation = {
-    type: 'reviewLogDeleted',
+    type: "reviewLogDeleted",
     payload: {
       reviewLogId: undo.reviewLogId,
       deleted: true,
@@ -398,7 +398,7 @@ export async function undoGradeCard(): Promise<UndoGradeResult> {
   };
 
   const cardOperation: CardOperation = {
-    type: 'card',
+    type: "card",
     payload: {
       id: undo.cardId,
       due: undo.card.due,
@@ -417,7 +417,7 @@ export async function undoGradeCard(): Promise<UndoGradeResult> {
   const cardOperationResult = handleCardOperation(cardOperation);
   if (!cardOperationResult.applied) {
     throw new Error(
-      'SHOULD NOT HAPPEN - there should not be conflict when undoing card grading'
+      "SHOULD NOT HAPPEN - there should not be conflict when undoing card grading",
     );
   }
 
@@ -436,7 +436,7 @@ export async function undoGradeCard(): Promise<UndoGradeResult> {
 
 export async function createNewDeck(name: string, description: string) {
   const deckOperation: DeckOperation = {
-    type: 'deck',
+    type: "deck",
     payload: {
       id: crypto.randomUUID(),
       name,
@@ -503,7 +503,7 @@ function handleCardOperation(operation: CardOperation): OperationResult {
 }
 
 function handleCardContentOperation(
-  operation: CardContentOperation
+  operation: CardContentOperation,
 ): OperationResult {
   const card = MemoryDB.getCardById(operation.payload.cardId);
   if (!card) {
@@ -534,7 +534,7 @@ function handleCardContentOperation(
 }
 
 function handleCardDeletedOperation(
-  operation: CardDeletedOperation
+  operation: CardDeletedOperation,
 ): OperationResult {
   const card = MemoryDB.getCardById(operation.payload.cardId);
 
@@ -564,7 +564,7 @@ function handleCardDeletedOperation(
 }
 
 function handleCardBookmarkedOperation(
-  operation: CardBookmarkedOperation
+  operation: CardBookmarkedOperation,
 ): OperationResult {
   const card = MemoryDB.getCardById(operation.payload.cardId);
 
@@ -593,7 +593,7 @@ function handleCardBookmarkedOperation(
 }
 
 function handleCardSuspendedOperation(
-  operation: CardSuspendedOperation
+  operation: CardSuspendedOperation,
 ): OperationResult {
   const card = MemoryDB.getCardById(operation.payload.cardId);
 
@@ -652,7 +652,7 @@ function handleDeckOperation(operation: DeckOperation): OperationResult {
 }
 
 function handleUpdateDeckCardOperation(
-  operation: UpdateDeckCardOperation
+  operation: UpdateDeckCardOperation,
 ): OperationResult {
   const cardsMap = MemoryDB._db.decksToCards[operation.payload.deckId];
 
@@ -675,23 +675,23 @@ function handleUpdateDeckCardOperation(
 
 export function handleClientOperation(operation: Operation): OperationResult {
   switch (operation.type) {
-    case 'card':
+    case "card":
       return handleCardOperation(operation);
-    case 'cardContent':
+    case "cardContent":
       return handleCardContentOperation(operation);
-    case 'cardDeleted':
+    case "cardDeleted":
       return handleCardDeletedOperation(operation);
-    case 'cardBookmarked':
+    case "cardBookmarked":
       return handleCardBookmarkedOperation(operation);
-    case 'cardSuspended':
+    case "cardSuspended":
       return handleCardSuspendedOperation(operation);
-    case 'deck':
+    case "deck":
       return handleDeckOperation(operation);
-    case 'updateDeckCard':
+    case "updateDeckCard":
       return handleUpdateDeckCardOperation(operation);
-    case 'reviewLog':
+    case "reviewLog":
       return { applied: false };
-    case 'reviewLogDeleted':
+    case "reviewLogDeleted":
       return { applied: false };
     default:
       throw new Error(`Unknown operation type: ${JSON.stringify(operation)}`);
@@ -699,7 +699,7 @@ export function handleClientOperation(operation: Operation): OperationResult {
 }
 
 export async function handleClientOperationWithPersistence(
-  operation: Operation
+  operation: Operation,
 ): Promise<OperationResult> {
   const result = handleClientOperation(operation);
 
@@ -715,7 +715,7 @@ export async function handleClientOperationWithPersistence(
 
 export async function updateDeletedClientSide(
   cardId: string,
-  deleted: boolean
+  deleted: boolean,
 ) {
   const card = MemoryDB.getCardById(cardId);
   if (!card) {
@@ -723,7 +723,7 @@ export async function updateDeletedClientSide(
   }
 
   const cardOperation: CardDeletedOperation = {
-    type: 'cardDeleted',
+    type: "cardDeleted",
     payload: {
       cardId,
       deleted,
@@ -735,7 +735,7 @@ export async function updateDeletedClientSide(
 
 export async function updateSuspendedClientSide(
   cardId: string,
-  suspended: Date
+  suspended: Date,
 ) {
   const card = MemoryDB.getCardById(cardId);
   if (!card) {
@@ -743,7 +743,7 @@ export async function updateSuspendedClientSide(
   }
 
   const cardOperation: CardSuspendedOperation = {
-    type: 'cardSuspended',
+    type: "cardSuspended",
     payload: {
       cardId,
       suspended,
@@ -755,7 +755,7 @@ export async function updateSuspendedClientSide(
 
 export async function updateBookmarkedClientSide(
   cardId: string,
-  bookmarked: boolean
+  bookmarked: boolean,
 ) {
   const card = MemoryDB.getCardById(cardId);
   if (!card) {
@@ -763,7 +763,7 @@ export async function updateBookmarkedClientSide(
   }
 
   const cardOperation: CardBookmarkedOperation = {
-    type: 'cardBookmarked',
+    type: "cardBookmarked",
     payload: {
       cardId,
       bookmarked,
@@ -783,11 +783,11 @@ export async function applyOperations(operations: Operation[]) {
   }
 
   const reviewLogOperations = operations.filter(
-    (op) => op.type === 'reviewLog' || op.type === 'reviewLogDeleted'
+    (op) => op.type === "reviewLog" || op.type === "reviewLogDeleted",
   );
 
   const operationsCopy = [...appliedOperations, ...reviewLogOperations].map(
-    (op) => structuredClone(op)
+    (op) => structuredClone(op),
   );
 
   await db.operations.bulkAdd(appliedOperations);
@@ -802,7 +802,7 @@ export async function applyOperations(operations: Operation[]) {
 // If the updates are applied sequentially, we can just update the sequence number
 // whenever an operation succeeds in being applied
 export async function applyServerOperations(
-  operations: Server2Client<Operation>[]
+  operations: Server2Client<Operation>[],
 ) {
   const seqNo = await getSeqNo();
   const highestSeqNo = operations.reduce((max, operation) => {
@@ -828,7 +828,7 @@ export async function applyServerOperations(
 
   await setSeqNo(highestSeqNo);
   const reviewLogOperations = operations.filter(
-    (op) => op.type === 'reviewLog' || op.type === 'reviewLogDeleted'
+    (op) => op.type === "reviewLog" || op.type === "reviewLogDeleted",
   );
   const reviewLogPromise = db.reviewLogOperations.bulkAdd(reviewLogOperations);
 

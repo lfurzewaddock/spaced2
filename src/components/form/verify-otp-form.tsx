@@ -6,17 +6,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
+} from "@/components/ui/form";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from '@/components/ui/input-otp';
-import { verifyOtpFormSchema, VerifyOtpFormValues } from '@/lib/form-schema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+} from "@/components/ui/input-otp";
+import { verifyOtpFormSchema, VerifyOtpFormValues } from "@/lib/form-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 type VerifyOtpProps = {
   onSubmit: (data: VerifyOtpFormValues) => Promise<void>;
@@ -26,11 +26,11 @@ export default function VerifyOtpForm({ onSubmit }: VerifyOtpProps) {
   const form = useForm<VerifyOtpFormValues>({
     resolver: zodResolver(verifyOtpFormSchema),
     defaultValues: {
-      pin: '',
+      pin: "",
     },
   });
 
-  const pinWatch = form.watch('pin');
+  const pinWatch = form.watch("pin");
 
   // Auto submit when the user has entered the 8 digits
   useEffect(() => {
@@ -41,10 +41,10 @@ export default function VerifyOtpForm({ onSubmit }: VerifyOtpProps) {
 
   return (
     <Form {...form}>
-      <form className='w-full space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="w-full space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name='pin'
+          name="pin"
           render={({ field: { onChange, ...field } }) => (
             <FormItem>
               <FormLabel>One-Time Password</FormLabel>

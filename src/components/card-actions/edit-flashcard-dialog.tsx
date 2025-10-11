@@ -1,12 +1,12 @@
-import { CreateUpdateFlashcardForm } from '@/components/create-flashcard';
+import { CreateUpdateFlashcardForm } from "@/components/create-flashcard";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { CardContentFormValues } from '@/lib/form-schema';
-import { CardWithMetadata } from '@/lib/types';
+} from "@/components/ui/dialog";
+import { CardContentFormValues } from "@/lib/form-schema";
+import { CardWithMetadata } from "@/lib/types";
 
 type EditFlashcardDialogProps = {
   onEdit: (values: CardContentFormValues) => void;
@@ -23,9 +23,11 @@ export default function EditFlashcardDialog({
 }: EditFlashcardDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='p-2 pt-6'>
-        <DialogHeader className='text-center'>
-          <DialogTitle className='text-center text-lg'>Edit Flashcard</DialogTitle>
+      <DialogContent className="p-2 pt-6">
+        <DialogHeader className="text-center">
+          <DialogTitle className="text-center text-lg">
+            Edit Flashcard
+          </DialogTitle>
         </DialogHeader>
 
         <CreateUpdateFlashcardForm

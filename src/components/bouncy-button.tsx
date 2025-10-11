@@ -1,9 +1,9 @@
-import { cn } from '@/lib/utils';
-import { useCallback, useEffect, useState } from 'react';
+import { cn } from "@/lib/utils";
+import { useCallback, useEffect, useState } from "react";
 
 export default function BouncyButton({
   children,
-  variant = 'default',
+  variant = "default",
   className,
   pressed,
   asButton = false,
@@ -11,7 +11,7 @@ export default function BouncyButton({
   onClick,
 }: {
   children: React.ReactNode;
-  variant?: 'default' | 'medium' | 'large';
+  variant?: "default" | "medium" | "large";
   className?: string;
   pressed?: boolean;
   asButton?: boolean;
@@ -41,8 +41,8 @@ export default function BouncyButton({
       handleRelease();
     };
 
-    document.addEventListener('mouseup', handleMouseUp);
-    return () => document.removeEventListener('mouseup', handleMouseUp);
+    document.addEventListener("mouseup", handleMouseUp);
+    return () => document.removeEventListener("mouseup", handleMouseUp);
   }, [isPressed, handleRelease]);
 
   useEffect(() => {
@@ -55,22 +55,22 @@ export default function BouncyButton({
     }
   }, [pressed, isPressed, handlePress, handleRelease]);
 
-  const Comp = asButton ? 'button' : 'div';
+  const Comp = asButton ? "button" : "div";
 
   return (
     <Comp
       className={cn(
-        'h-max w-max cursor-pointer transition-transform duration-150 active:duration-100',
-        !disabled && isPressed && 'scale-90',
-        !disabled && isReleased && 'scale-105',
-        variant == 'medium' && !disabled && isPressed && 'scale-95',
-        variant == 'medium' && !disabled && 'duration-200 active:duration-150',
-        variant == 'medium' && !disabled && isReleased && 'scale-102',
-        variant == 'large' && !disabled && isPressed && 'scale-98',
-        variant == 'large' && !disabled && 'duration-300 active:duration-200',
-        variant == 'large' && !disabled && isReleased && 'scale-101',
-        disabled && 'cursor-not-allowed',
-        className
+        "h-max w-max cursor-pointer transition-transform duration-150 active:duration-100",
+        !disabled && isPressed && "scale-90",
+        !disabled && isReleased && "scale-105",
+        variant == "medium" && !disabled && isPressed && "scale-95",
+        variant == "medium" && !disabled && "duration-200 active:duration-150",
+        variant == "medium" && !disabled && isReleased && "scale-102",
+        variant == "large" && !disabled && isPressed && "scale-98",
+        variant == "large" && !disabled && "duration-300 active:duration-200",
+        variant == "large" && !disabled && isReleased && "scale-101",
+        disabled && "cursor-not-allowed",
+        className,
       )}
       onMouseDown={handlePress}
       onMouseUp={handleRelease}

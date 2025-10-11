@@ -1,34 +1,31 @@
-import { useReviewCards } from '@/components/hooks/query';
-import { Badge } from '@/components/ui/badge';
+import { useReviewCards } from "@/components/hooks/query";
+import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { State } from 'ts-fsrs';
+} from "@/components/ui/tooltip";
+import { State } from "ts-fsrs";
 
 export default function CardCountBadges() {
   const reviewCards = useReviewCards();
   const numNewCards = reviewCards?.filter(
-    (card) => card.state === State.New
+    (card) => card.state === State.New,
   ).length;
   const numLearningCards = reviewCards?.filter(
-    (card) => card.state === State.Learning || card.state === State.Relearning
+    (card) => card.state === State.Learning || card.state === State.Relearning,
   ).length;
   const numReviewCards = reviewCards?.filter(
-    (card) => card.state === State.Review
+    (card) => card.state === State.Review,
   ).length;
 
   return (
-    <div className='hidden sm:flex h-8 justify-center gap-2'>
+    <div className="hidden sm:flex h-8 justify-center gap-2">
       <TooltipProvider delayDuration={100}>
         <Tooltip>
-          <TooltipTrigger className='cursor-text'>
-            <Badge
-              variant='dot'
-              className='h-full before:bg-blue-500'
-            >
+          <TooltipTrigger className="cursor-text">
+            <Badge variant="dot" className="h-full before:bg-blue-500">
               {numNewCards}
             </Badge>
           </TooltipTrigger>
@@ -40,11 +37,8 @@ export default function CardCountBadges() {
 
       <TooltipProvider delayDuration={100}>
         <Tooltip>
-          <TooltipTrigger className='cursor-text'>
-            <Badge
-              variant='dot'
-              className='h-full before:bg-red-500'
-            >
+          <TooltipTrigger className="cursor-text">
+            <Badge variant="dot" className="h-full before:bg-red-500">
               {numLearningCards}
             </Badge>
           </TooltipTrigger>
@@ -56,11 +50,8 @@ export default function CardCountBadges() {
 
       <TooltipProvider delayDuration={100}>
         <Tooltip>
-          <TooltipTrigger className='cursor-text'>
-            <Badge
-              variant='dot'
-              className='h-full before:bg-green-500'
-            >
+          <TooltipTrigger className="cursor-text">
+            <Badge variant="dot" className="h-full before:bg-green-500">
               {numReviewCards}
             </Badge>
           </TooltipTrigger>

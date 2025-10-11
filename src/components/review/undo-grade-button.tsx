@@ -1,9 +1,9 @@
-import { useUndoStack } from '@/components/hooks/query';
-import { undoGradeCard } from '@/lib/sync/operation';
-import { isEventTargetInput } from '@/lib/utils';
-import { Redo2 } from 'lucide-react';
-import { useEffect } from 'react';
-import { toast } from 'sonner';
+import { useUndoStack } from "@/components/hooks/query";
+import { undoGradeCard } from "@/lib/sync/operation";
+import { isEventTargetInput } from "@/lib/utils";
+import { Redo2 } from "lucide-react";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 export default function UndoGradeButton() {
   const undoStack = useUndoStack();
@@ -19,16 +19,16 @@ export default function UndoGradeButton() {
         return;
       }
 
-      if (event.ctrlKey && event.key === 'z') {
+      if (event.ctrlKey && event.key === "z") {
         event.preventDefault();
         undoGradeCard();
-        toast('Undo successful', {
-          icon: <Redo2 className='size-4' />,
+        toast("Undo successful", {
+          icon: <Redo2 className="size-4" />,
         });
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
     // length as dependency as the array reference is stable
   }, [undoStack.length]);
 
@@ -38,15 +38,15 @@ export default function UndoGradeButton() {
 
   return (
     <div
-      className='px-2 py-3 cursor-pointer'
+      className="px-2 py-3 cursor-pointer"
       onClick={() => {
         undoGradeCard();
-        toast('Undo successful', {
-          icon: <Redo2 className='size-4' />,
+        toast("Undo successful", {
+          icon: <Redo2 className="size-4" />,
         });
       }}
     >
-      <Redo2 className='size-6 text-muted-foreground/50 hover:text-muted-foreground transition-all rotate-180' />
+      <Redo2 className="size-6 text-muted-foreground/50 hover:text-muted-foreground transition-all rotate-180" />
     </div>
   );
 }

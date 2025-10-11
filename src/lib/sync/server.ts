@@ -1,29 +1,29 @@
 import {
-    Operation,
-    Server2Client,
-    server2ClientSyncSchema,
-} from '@/lib/sync/operation';
-import { z } from 'zod';
+  Operation,
+  Server2Client,
+  server2ClientSyncSchema,
+} from "@/lib/sync/operation";
+import { z } from "zod";
 
 /**
  * Pull operations from the server.
  */
 export async function pullFromServer(
   clientId: string,
-  seqNo: number
+  seqNo: number,
 ): Promise<Server2Client<Operation>[]> {
   const response = await fetch(
     `${import.meta.env.VITE_BACKEND_URL}/sync?seqNo=${seqNo}`,
     {
-      credentials: 'include',
+      credentials: "include",
       headers: {
-        'X-Client-Id': clientId,
+        "X-Client-Id": clientId,
       },
-    }
+    },
   );
 
   if (!response.ok) {
-    throw new Error('Failed to pull operations from server');
+    throw new Error("Failed to pull operations from server");
   }
 
   const data = await response.json();
@@ -39,20 +39,20 @@ export async function pullFromServer(
  */
 export async function pushToServer(
   clientId: string,
-  operations: Operation[]
+  operations: Operation[],
 ): Promise<{ success: boolean }> {
   const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/sync`, {
-    credentials: 'include',
-    method: 'POST',
+    credentials: "include",
+    method: "POST",
     headers: {
-      'X-Client-Id': clientId,
-      'Content-Type': 'application/json',
+      "X-Client-Id": clientId,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ ops: operations }),
   });
 
   if (!response.ok) {
-    throw new Error('Failed to push operations to server');
+    throw new Error("Failed to push operations to server");
   }
 
   const data = await response.json();

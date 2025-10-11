@@ -1,8 +1,8 @@
-import NavButton from '@/components/nav/nav-button';
-import { cn, isEventTargetInput } from '@/lib/utils';
-import { Book, Bookmark, Home, Plus, UserRound } from 'lucide-react';
-import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import NavButton from "@/components/nav/nav-button";
+import { cn, isEventTargetInput } from "@/lib/utils";
+import { Book, Bookmark, Home, Plus, UserRound } from "lucide-react";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router";
 
 export default function NavBar() {
   const path = useLocation();
@@ -13,68 +13,68 @@ export default function NavBar() {
       // Command + 1, 2, 3 ,4, 5
       if (!e.shiftKey) return;
       if (isEventTargetInput(e)) return;
-      if (e.key == '!') {
-        navigate('/decks');
+      if (e.key == "!") {
+        navigate("/decks");
         return;
       }
-      if (e.key == '@') {
-        navigate('/saved');
+      if (e.key == "@") {
+        navigate("/saved");
         return;
       }
-      if (e.key == '#') {
-        navigate('/');
+      if (e.key == "#") {
+        navigate("/");
         return;
       }
-      if (e.key == '$') {
-        navigate('/create');
+      if (e.key == "$") {
+        navigate("/create");
         return;
       }
-      if (e.key == '%') {
-        navigate('/profile');
+      if (e.key == "%") {
+        navigate("/profile");
         return;
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [navigate]);
 
   return (
     <div
       className={cn(
-        'fixed bottom-0 full flex z-10 bg-muted dark:bg-background w-full',
-        'md:left-4 md:h-full md:flex-col md:justify-center md:w-16 -mx-2'
+        "fixed bottom-0 full flex z-10 bg-muted dark:bg-background w-full",
+        "md:left-4 md:h-full md:flex-col md:justify-center md:w-16 -mx-2",
       )}
     >
       <NavButton
         icon={<Book />}
-        href={'/decks'}
-        focused={path.pathname === '/decks'}
+        href={"/decks"}
+        focused={path.pathname === "/decks"}
       />
 
       {/* Bookmarks */}
       <NavButton
         icon={<Bookmark />}
-        href={'/saved'}
-        focused={path.pathname === '/saved'}
+        href={"/saved"}
+        focused={path.pathname === "/saved"}
       />
 
       <NavButton
-        icon={<Home className={cn('scale-x-110')} strokeWidth={2.5} />}
-        href={'/'}
-        focused={path.pathname === '/'}
+        icon={<Home className={cn("scale-x-110")} strokeWidth={2.5} />}
+        href={"/"}
+        focused={path.pathname === "/"}
       />
 
       <NavButton
         icon={<Plus strokeWidth={3} />}
-        href={'/create'}
-        focused={path.pathname === '/create'}
+        href={"/create"}
+        focused={path.pathname === "/create"}
       />
 
       {/* Settings */}
       <NavButton
         icon={<UserRound />}
-        href={'/profile'}
-        focused={path.pathname === '/profile'}
+        href={"/profile"}
+        focused={path.pathname === "/profile"}
       />
     </div>
   );

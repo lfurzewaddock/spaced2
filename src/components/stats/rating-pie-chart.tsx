@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { Label, Pie, PieChart } from 'recharts';
-import { Rating, ReviewLog } from 'ts-fsrs';
+import * as React from "react";
+import { Label, Pie, PieChart } from "recharts";
+import { Rating, ReviewLog } from "ts-fsrs";
 
 import {
   Card,
@@ -8,13 +8,13 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from '@/components/ui/chart';
+} from "@/components/ui/chart";
 
 interface RatingPieChartProps {
   reviewLogs: ReviewLog[];
@@ -22,27 +22,27 @@ interface RatingPieChartProps {
 
 const chartConfig = {
   count: {
-    label: 'Reviews',
+    label: "Reviews",
   },
   again: {
-    label: 'Again',
-    color: 'hsl(var(--chart-1))',
+    label: "Again",
+    color: "hsl(var(--chart-1))",
   },
   hard: {
-    label: 'Hard',
-    color: 'hsl(var(--chart-2))',
+    label: "Hard",
+    color: "hsl(var(--chart-2))",
   },
   good: {
-    label: 'Good',
-    color: 'hsl(var(--chart-3))',
+    label: "Good",
+    color: "hsl(var(--chart-3))",
   },
   easy: {
-    label: 'Easy',
-    color: 'hsl(var(--chart-4))',
+    label: "Easy",
+    color: "hsl(var(--chart-4))",
   },
   manual: {
-    label: 'Manual',
-    color: 'hsl(var(--chart-5))',
+    label: "Manual",
+    color: "hsl(var(--chart-5))",
   },
 } satisfies ChartConfig;
 
@@ -56,17 +56,17 @@ export function RatingPieChart({ reviewLogs }: RatingPieChartProps) {
 
     return [
       {
-        rating: 'again',
+        rating: "again",
         count: counts.again || 0,
-        fill: 'hsl(var(--chart-1))',
+        fill: "hsl(var(--chart-1))",
       },
-      { rating: 'hard', count: counts.hard || 0, fill: 'hsl(var(--chart-2))' },
-      { rating: 'good', count: counts.good || 0, fill: 'hsl(var(--chart-3))' },
-      { rating: 'easy', count: counts.easy || 0, fill: 'hsl(var(--chart-4))' },
+      { rating: "hard", count: counts.hard || 0, fill: "hsl(var(--chart-2))" },
+      { rating: "good", count: counts.good || 0, fill: "hsl(var(--chart-3))" },
+      { rating: "easy", count: counts.easy || 0, fill: "hsl(var(--chart-4))" },
       {
-        rating: 'manual',
+        rating: "manual",
         count: counts.manual || 0,
-        fill: 'hsl(var(--chart-5))',
+        fill: "hsl(var(--chart-5))",
       },
     ];
   }, [reviewLogs]);
@@ -76,15 +76,15 @@ export function RatingPieChart({ reviewLogs }: RatingPieChartProps) {
   }, [chartData]);
 
   return (
-    <Card className='w-full'>
-      <CardHeader className='items-center pb-2'>
+    <Card className="w-full">
+      <CardHeader className="items-center pb-2">
         <CardTitle>Rating Distribution</CardTitle>
         <CardDescription>Breakdown of review ratings</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer
           config={chartConfig}
-          className='mx-auto aspect-square w-full'
+          className="mx-auto aspect-square w-full"
         >
           <PieChart>
             <ChartTooltip
@@ -93,32 +93,32 @@ export function RatingPieChart({ reviewLogs }: RatingPieChartProps) {
             />
             <Pie
               data={chartData}
-              dataKey='count'
-              nameKey='rating'
+              dataKey="count"
+              nameKey="rating"
               innerRadius={60}
               strokeWidth={5}
             >
               <Label
                 content={({ viewBox }) => {
-                  if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
+                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                     return (
                       <text
                         x={viewBox.cx}
                         y={viewBox.cy}
-                        textAnchor='middle'
-                        dominantBaseline='middle'
+                        textAnchor="middle"
+                        dominantBaseline="middle"
                       >
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className='fill-foreground text-3xl font-bold'
+                          className="fill-foreground text-3xl font-bold"
                         >
                           {totalReviews.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
-                          className='fill-muted-foreground'
+                          className="fill-muted-foreground"
                         >
                           Reviews
                         </tspan>
