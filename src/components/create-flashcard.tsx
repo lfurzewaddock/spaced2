@@ -14,7 +14,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-type CreateFlashcardFormProps = {
+type CreateUpdateFlashcardFormProps = {
   onSubmit: (values: CardContentFormValues) => void;
   numDecks?: number;
   initialFront?: string;
@@ -25,42 +25,57 @@ type CreateFlashcardFormProps = {
 const FOCUS_QUESTION_KEY = " ";
 const LOCALSTORAGE_KEY = "create-flashcard-draft";
 
+const saveDraft = (values: CardContentFormValues) => {
+  try {
+    localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(values));
+  } catch (e) {
+    console.error("Failed to save draft:", e);
+  }
+};
+
+const loadDraft = (): CardContentFormValues | null => {
+  try {
+    const saved = localStorage.getItem(LOCALSTORAGE_KEY);
+    return saved ? JSON.parse(saved) : null;
+  } catch (e) {
+    console.error("Failed to load draft:", e);
+    return null;
+  }
+};
+
+const clearDraft = () => {
+  try {
+    localStorage.removeItem(LOCALSTORAGE_KEY);
+  } catch (e) {
+    console.error("Failed to clear draft:", e);
+  }
+};
+
 export function CreateUpdateFlashcardForm({
   onSubmit,
   numDecks,
   initialFront,
   initialBack,
   onImageUpload,
-}: CreateFlashcardFormProps) {
-  const isUpdate = initialFront || initialBack;
+}: CreateUpdateFlashcardFormProps) {
+  const isUpdateMode = Boolean(
+    initialFront !== undefined || initialBack !== undefined,
+  );
 
   const defaultValues = useMemo(() => {
-    if (isUpdate) {
+    if (isUpdateMode) {
       return {
         front: initialFront || "",
         back: initialBack || "",
       };
     }
 
-    console.log("Getting default values from localStorage");
-    try {
-      const saved = localStorage.getItem(LOCALSTORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        return {
-          front: parsed.front || "",
-          back: parsed.back || "",
-        };
-      }
-    } catch (e) {
-      console.error("Failed to load draft from localStorage:", e);
-    }
-
+    const draft = loadDraft();
     return {
-      front: "",
-      back: "",
+      front: draft?.front || "",
+      back: draft?.back || "",
     };
-  }, [isUpdate, initialFront, initialBack]);
+  }, [isUpdateMode, initialFront, initialBack]);
 
   const form = useForm<CardContentFormValues>({
     resolver: zodResolver(cardContentFormSchema),
@@ -68,73 +83,54 @@ export function CreateUpdateFlashcardForm({
   });
 
   useEffect(() => {
-    if (initialFront) {
-      form.setValue("front", initialFront);
-    }
-    if (initialBack) {
-      form.setValue("back", initialBack);
-    }
-  }, [initialFront, initialBack, form]);
-
-  // Save to localStorage on form changes (only for create mode)
-  useEffect(() => {
-    if (isUpdate) return;
+    if (isUpdateMode) return;
 
     const subscription = form.watch((values) => {
-      try {
-        localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(values));
-      } catch (e) {
-        console.error("Failed to save draft to localStorage:", e);
-      }
+      saveDraft(values as CardContentFormValues);
     });
 
     return () => subscription.unsubscribe();
-  }, [form, isUpdate]);
+  }, [form, isUpdateMode]);
 
   const handleSubmit = useCallback(
     (data: CardContentFormValues) => {
       navigator?.vibrate(VibrationPattern.successConfirm);
-      // if (!isUpdate) {
-      // }
 
       onSubmit(data);
-      form.reset();
+      // Explicitly reset to empty instead of the default values (because they were fetched from localStorage)
+      form.reset({ front: "", back: "" });
+      // TODO: fix the focus not returning to the front input
       form.setFocus("front");
 
-      if (isUpdate) {
+      if (isUpdateMode) {
         const hasChanged =
           initialFront !== data.front || initialBack !== data.back;
         if (hasChanged) {
           toast.success("Flashcard updated");
         }
       } else {
-        try {
-          localStorage.removeItem(LOCALSTORAGE_KEY);
-        } catch (e) {
-          console.error("Failed to clear draft from localStorage:", e);
-        }
+        clearDraft();
         toast.success("Flashcard created");
       }
     },
-    [form, isUpdate, initialFront, initialBack, onSubmit],
+    [form, isUpdateMode, initialFront, initialBack, onSubmit],
   );
 
+  // Keyboard shortcuts
   useEffect(() => {
-    // cmd enter to submit
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (!isEventTargetInput(event)) {
-        if (event.key === FOCUS_QUESTION_KEY) {
-          form.setFocus("front");
-          event.preventDefault();
-        }
+      if (!isEventTargetInput(event) && event.key === FOCUS_QUESTION_KEY) {
+        form.setFocus("front");
+        event.preventDefault();
         return;
       }
-      if (event.metaKey && event.key === "Enter") {
+
+      if (isEventTargetInput(event) && event.metaKey && event.key === "Enter") {
         form.handleSubmit(handleSubmit)();
-        form.setFocus("front");
         event.preventDefault();
       }
     };
+
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [form, handleSubmit]);
@@ -151,7 +147,6 @@ export function CreateUpdateFlashcardForm({
             className="text-sm border-none shadow-none h-32"
             form={form}
             name="front"
-            // label='Question'
             placeholder="Enter the question"
           />
         </div>
@@ -162,10 +157,10 @@ export function CreateUpdateFlashcardForm({
             className="text-sm border-none shadow-none h-32"
             form={form}
             name="back"
-            // label='Answer'
             placeholder="Enter the answer"
           />
         </div>
+
         <div className="flex justify-start">
           {numDecks !== undefined && (
             <div className="flex gap-1 text-muted-foreground justify-center items-center font-semibold ml-2">
@@ -181,8 +176,7 @@ export function CreateUpdateFlashcardForm({
             size="lg"
             className="ml-auto self-end rounded-lg [&_svg]:size-3"
           >
-            {isUpdate ? "Update" : "Create"}
-
+            {isUpdateMode ? "Update" : "Create"}
             <CmdEnterIcon />
           </Button>
         </div>
