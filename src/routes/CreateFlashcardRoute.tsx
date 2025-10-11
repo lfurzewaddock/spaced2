@@ -5,6 +5,7 @@ import { useDecks } from "@/components/hooks/query";
 import SearchBar from "@/components/search-bar";
 import { Card } from "@/components/ui/card";
 import ImageUploadDialog from "@/image-upload-dialog";
+import ImagePickerResponsive from "@/components/images/image-picker-responsive";
 import {
   constructImageMarkdownLink,
   uploadImage,
@@ -14,7 +15,7 @@ import { createNewCard } from "@/lib/sync/operation";
 import { cn } from "@/lib/utils";
 import VibrationPattern from "@/lib/vibrate";
 import { CircleCheck, CirclePlus, Image } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
 export function DeckSelectionCard({
@@ -101,6 +102,7 @@ export default function CreateFlashcardRoute() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [uploadPromise, setUploadPromise] =
     useState<Promise<UploadResponse> | null>(null);
+  const [imagePickerOpen, setImagePickerOpen] = useState(false);
 
   const onImageUpload = async (altText?: string) => {
     if (!imageFile || !uploadPromise) {
@@ -140,6 +142,21 @@ export default function CreateFlashcardRoute() {
     }
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Check for Ctrl+I (Windows/Linux) or Cmd+I (Mac) for "Image"
+      if ((e.ctrlKey || e.metaKey) && e.key === "i") {
+        e.preventDefault();
+        setImagePickerOpen(true);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
     <div className="col-span-12 xl:col-start-4 xl:col-end-10 md:px-24 xl:px-0 h-full pb-40">
       <ImageUploadDialog
@@ -148,6 +165,11 @@ export default function CreateFlashcardRoute() {
         loading={imageUploading}
         open={imageUploadDialogOpen}
         onOpenChange={onImageUpoadDialogOpenChange}
+      />
+
+      <ImagePickerResponsive
+        open={imagePickerOpen}
+        onOpenChange={setImagePickerOpen}
       />
 
       <SearchBar
@@ -237,6 +259,20 @@ export default function CreateFlashcardRoute() {
             setUploadPromise(promise);
           }}
         />
+
+        <div className="mt-2 text-center">
+          <p className="text-xs text-muted-foreground">
+            Press{" "}
+            <kbd className="px-1.5 py-0.5 bg-muted rounded text-xs font-mono">
+              Cmd+I
+            </kbd>{" "}
+            (Mac) or{" "}
+            <kbd className="px-1.5 py-0.5 bg-muted rounded text-xs font-mono">
+              Ctrl+I
+            </kbd>{" "}
+            (Windows) to browse recent images
+          </p>
+        </div>
       </div>
     </div>
   );
