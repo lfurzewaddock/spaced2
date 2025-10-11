@@ -10,7 +10,7 @@ import { isEventTargetInput } from "@/lib/utils";
 import VibrationPattern from "@/lib/vibrate";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Book } from "lucide-react";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -23,6 +23,7 @@ type CreateFlashcardFormProps = {
 };
 
 const FOCUS_QUESTION_KEY = " ";
+const LOCALSTORAGE_KEY = "create-flashcard-draft";
 
 export function CreateUpdateFlashcardForm({
   onSubmit,
@@ -31,12 +32,39 @@ export function CreateUpdateFlashcardForm({
   initialBack,
   onImageUpload,
 }: CreateFlashcardFormProps) {
+  const isUpdate = initialFront || initialBack;
+
+  const defaultValues = useMemo(() => {
+    if (isUpdate) {
+      return {
+        front: initialFront || "",
+        back: initialBack || "",
+      };
+    }
+
+    console.log("Getting default values from localStorage");
+    try {
+      const saved = localStorage.getItem(LOCALSTORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return {
+          front: parsed.front || "",
+          back: parsed.back || "",
+        };
+      }
+    } catch (e) {
+      console.error("Failed to load draft from localStorage:", e);
+    }
+
+    return {
+      front: "",
+      back: "",
+    };
+  }, [isUpdate, initialFront, initialBack]);
+
   const form = useForm<CardContentFormValues>({
     resolver: zodResolver(cardContentFormSchema),
-    defaultValues: {
-      front: initialFront || "",
-      back: initialBack || "",
-    },
+    defaultValues,
   });
 
   useEffect(() => {
@@ -48,13 +76,31 @@ export function CreateUpdateFlashcardForm({
     }
   }, [initialFront, initialBack, form]);
 
-  const isUpdate = initialFront || initialBack;
+  // Save to localStorage on form changes (only for create mode)
+  useEffect(() => {
+    if (isUpdate) return;
+
+    const subscription = form.watch((values) => {
+      try {
+        localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(values));
+      } catch (e) {
+        console.error("Failed to save draft to localStorage:", e);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form, isUpdate]);
+
   const handleSubmit = useCallback(
     (data: CardContentFormValues) => {
       navigator?.vibrate(VibrationPattern.successConfirm);
+      // if (!isUpdate) {
+      // }
+
       onSubmit(data);
       form.reset();
       form.setFocus("front");
+
       if (isUpdate) {
         const hasChanged =
           initialFront !== data.front || initialBack !== data.back;
@@ -62,6 +108,11 @@ export function CreateUpdateFlashcardForm({
           toast.success("Flashcard updated");
         }
       } else {
+        try {
+          localStorage.removeItem(LOCALSTORAGE_KEY);
+        } catch (e) {
+          console.error("Failed to clear draft from localStorage:", e);
+        }
         toast.success("Flashcard created");
       }
     },
