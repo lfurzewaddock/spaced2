@@ -6,7 +6,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { CardWithMetadata } from "@/lib/types";
-import { cn } from "@/lib/utils";
+import { cn, isEventTargetInput } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
 const FLIP_CARD_KEY = " ";
@@ -59,6 +59,10 @@ export default function MobileReviewCarousel({
       });
 
       const handleSpacePress = (event: KeyboardEvent) => {
+        if (isEventTargetInput(event)) {
+          return;
+        }
+
         if (event.key === FLIP_CARD_KEY) {
           event.preventDefault();
 
