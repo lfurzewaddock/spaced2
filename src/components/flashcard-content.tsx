@@ -14,7 +14,7 @@ export default function FlashcardContent({ content }: { content: string }) {
       className={cn(
         'prose min-h-96 h-[55dvh] overflow-y-auto flex flex-col flex-1 p-2 rounded-none w-full animate-in fade-in before:content-[""] after:content-[""] before:flex-1 after:flex-1 items-center prose-img:rounded-lg transition-all duration-300',
         "sm:h-[400px] sm:shadow-xs",
-        "sm:dark:bg-muted/20 sm:border dark:border-none dark:prose-p:text-foreground dark:prose-strong:text-foreground dark:prose-li:text-foreground dark:prose-code:text-foreground dark:prose-pre:text-foreground dark:prose-ul:text-foreground dark:prose-ol:text-foreground",
+        "sm:dark:bg-muted/20 sm:border dark:border-none dark:prose-p:text-foreground dark:prose-strong:text-foreground dark:prose-li:text-foreground dark:prose-code:text-foreground dark:prose-pre:text-foreground dark:prose-ul:text-foreground dark:prose-headings:text-foreground dark:prose-a:text-foreground/80 dark:prose-table:text-foreground/80",
         // Ensure that the <pre> elements don't have their own scrollbar.
         // If they do, the elements can end up really short when there are other elements in the container.
         // Instead, we want the <pre> to fill up the container as well
